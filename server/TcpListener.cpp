@@ -175,11 +175,10 @@ void TcpListener::broadcastToClients(int sendingClient, const char* msg, int len
 void TcpListener::streamToClients(const char* msg, int length) {
 	int j = available;
 	int i = 1;			// start at 1, because the internal listener is at 0
-	while (j > 0) {		// Send to all available devices
+	while (j > 0 && (i < MAX_CLIENTS + 1)) {		// Send to all available devices
 		int outSock = m_master[i].fd;
 		if (outSock > -1) {	
-			if (streamMe[i])
-				sendToClient(outSock, msg, length);
+			if (streamMe[i]) sendToClient(outSock, msg, length);
 			j--;
 		}
 		i++;
